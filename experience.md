@@ -8,7 +8,7 @@ as a full stack web developer using ASP.NET with C# on the backend, React with
 TypeScript on the frontend, and a MySQL database.
 
 In addition I have extensive experience with Python for both scripting and web
-development. Rust is my currently my language of choice for personal projects.
+development. Rust is currently my language of choice for personal projects.
 
 I am currently looking for new roles in backend web development.
 
@@ -31,7 +31,7 @@ Achievements:
 - **Dates:** September 2020 – October 2022
 - **Languages/Technologies:** C#, VB.NET, JavaScript, T-SQL, ASP.NET, AWS
 
-This was my first position as a software engineer, I started off solving tickets
+This was my first position as a software engineer. I started off solving tickets
 for existing systems and quickly moved on to new feature development.
 
 Achievements:
@@ -45,7 +45,7 @@ Achievements:
 - **Location:** Dublin, Ireland
 - **Dates:** September 2016 – September 2020
 
-Role:
+Achievements:
 - Managed a team of 12 staff members, ensuring high customer satisfaction and
   efficient operations.
 - Developed and conducted climbing courses for beginners and experts.
