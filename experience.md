@@ -1,5 +1,3 @@
-# Experience
-
 - **Languages:** C#, TypeScript, Python, SQL, Rust
 - **Technologies:** ASP.NET, React, AWS
 - **Work experience:** 4 years
