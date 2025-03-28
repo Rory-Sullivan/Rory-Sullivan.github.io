@@ -1,7 +1,12 @@
+---
+layout: page
+title: Projects
+---
+
 ## Projects
 ### Avy
 
-![Avy icon](images/avy_icon.png)
+![Avy icon](/assets/images/avy_icon.png)
 
 [https://github.com/NWACus/avy](https://github.com/NWACus/avy)
 
@@ -11,7 +16,7 @@ project since January 2025.
 
 ### Dry Rock
 
-![Dry rock screenshot](images/dry_rock_screenshot.png)
+![Dry rock screenshot](/assets/images/dry_rock_screenshot.png)
 
 [https://dryrock.ie/](https://dryrock.ie/)
 
@@ -20,7 +25,7 @@ climbing areas to find the best weather.
 
 ### Rust Ray Tracer
 
-![RS ray tracer render](images/rs_ray_tracer_render.png)
+![RS ray tracer render](/assets/images/rs_ray_tracer_render.png)
 
 [https://github.com/Rory-Sullivan/rs_ray_tracer](https://github.com/Rory-Sullivan/rs_ray_tracer)
 
@@ -35,7 +40,7 @@ Norwegian Meteorological Institute.
 
 ### Hexagonal Path Finding Visualiser
 
-![Hexagonal path finding visualiser demo image](images/hexagonal_path_finding_visualiser.png)
+![Hexagonal path finding visualiser demo image](/assets/images/hexagonal_path_finding_visualiser.png)
 
 [https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/](https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/)
 

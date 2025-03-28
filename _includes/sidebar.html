@@ -1,0 +1,18 @@
+<div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        <a href="{{ site.baseurl }}">
+          {{ site.title }}
+        </a>
+      </h1>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item{% if page.url == '/'' %} active{% endif %}" href="/">Home</a>
+      <a class="sidebar-nav-item{% if page.url == '/experience.html' %} active{% endif %}"
+        href="/experience">Experience</a>
+      <a class="sidebar-nav-item{% if page.url == '/projects.html' %} active{% endif %}" href="/projects">Projects</a>
+    </nav>
+  </div>
+</div>
