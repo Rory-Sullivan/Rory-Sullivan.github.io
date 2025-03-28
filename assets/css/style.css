@@ -1,0 +1,9 @@
+/* Only show the profile photo in the sidebar on larger devices */
+.head-shot-container {
+  display: none;
+}
+@media (min-width: 48em) {
+  .head-shot-container {
+    display: inherit;
+  }
+}
