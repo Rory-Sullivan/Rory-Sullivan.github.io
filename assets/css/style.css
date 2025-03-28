@@ -7,3 +7,11 @@
     display: inherit;
   }
 }
+
+/* Add some extra padding to the bottom part of the sidebar navigation */
+@media (min-width: 48em) {
+  .sidebar-sticky {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
