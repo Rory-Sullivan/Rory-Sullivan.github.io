@@ -2,16 +2,24 @@
 .head-shot-container {
   display: none;
 }
-@media (min-width: 48em) {
+@media (min-width: 48em) and (min-height: 48em) {
   .head-shot-container {
     display: inherit;
   }
 }
 
-/* Add some extra padding to the bottom part of the sidebar navigation */
-@media (min-width: 48em) {
-  .sidebar-sticky {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+.sidebar {
+  overflow-x: scroll;
+}
+
+.sidebar > .container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Pull some elements to bottom of sidebar */
+.sidebar-bottom {
+  margin-top: auto;
+  margin-bottom: 0px;
 }
