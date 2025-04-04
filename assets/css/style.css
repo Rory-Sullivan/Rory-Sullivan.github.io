@@ -23,3 +23,21 @@
   margin-top: auto;
   margin-bottom: 0px;
 }
+
+.center {
+  text-align: center;
+}
+
+.button {
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    color: #fff;
+    background-color: #202020;
+    border-color: #202020;
+    border-radius: 0.25rem;
+}
+
+.button:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
