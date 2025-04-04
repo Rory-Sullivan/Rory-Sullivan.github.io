@@ -3,7 +3,6 @@ layout: page
 title: Projects
 ---
 
-## Projects
 ### Avy
 
 ![Avy icon](/assets/images/avy_icon.png)
