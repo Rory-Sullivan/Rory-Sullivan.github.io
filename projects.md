@@ -5,7 +5,7 @@ title: Projects
 
 ### Avy
 
-![Avy icon](/assets/images/avy_icon.png)
+<img src="/assets/images/avy_icon.png" alt="Avy icon" style="max-height: 10rem;">
 
 [https://github.com/NWACus/avy](https://github.com/NWACus/avy)
 
