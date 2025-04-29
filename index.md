@@ -31,4 +31,5 @@ see the links below.
 <div class="center">
     <a class="button" href="/experience">Experience</a>
     <a class="button" href="/projects">Projects</a>
+    <a class="button" href="/blog">Blog</a>
 </div>
