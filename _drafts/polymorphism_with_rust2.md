@@ -1,0 +1,194 @@
+---
+layout: page
+title: "Polymorphism with Rust, part 2: Generics"
+tags: [rust, polymorphism, inheritance, generics]
+---
+
+
+## Polymorphism with generics
+
+Generics allow us to generalize a function for multiple types, and we are able
+to specify certain traits that a generic type must implement. The syntax for
+this is as follows:
+
+```rust
+fn do_something<T: Trait>(x: T) {}
+```
+
+> **Aside**<br />
+> There is an alternative equivalent syntax using a where clause:
+>
+> ```rust
+> fn do_something<T>(x: T) where t: Trait {}
+> ```
+
+### `get_ray_color` with generics
+
+This is perfect for our `get_ray_color` function as we can see here:
+
+```rust
+fn get_ray_color<H: Hittable>(ray: &Ray, object: &H) -> Color {
+    let does_hit = object.does_hit(ray);
+    // ...
+}
+```
+
+When we specify `H` as `<H: Hittable>` this implies that any type that is
+substituted for `H` must implement `Hittable`. Hence we can pass is either a
+`Sphere` or a `Triangle` to this function.
+
+```rust
+let ray = Ray {
+    // ...
+};
+let sphere = Sphere {
+    // ...
+};
+let triangle = Triangle {
+    // ...
+};
+
+let _ = get_ray_color(&ray, &sphere);
+let _ = get_ray_color(&ray, &triangle);
+```
+
+Since we implemented `Hittable` for our `Object` enum we could even pass that in
+to our function. Thus it is not necessary to pick between the enum pattern we
+described in the previous section and generics, we can use them both at the same
+time.
+
+### `Scene` with generics
+
+What about our `Scene` struct? Well generics can be applied to structs as
+follows:
+
+```rust
+struct Scene<H: Hittable> {
+    pub objects: Vec<H>,
+}
+```
+
+> **Aside**<br />
+> `Vec<T>` is in fact already a generic struct.
+
+Then you might think we could do the following:
+
+```rust
+let _ = Scene {
+    objects: vec![
+        Sphere {
+            center: (0.0, 0.0, 0.0),
+            radius: 0.0,
+        },
+        // Adding a Triangle is a compiler error
+        Triangle {
+            point1: (0.0, 0.0, 0.0),
+            point2: (0.0, 0.0, 0.0),
+            point3: (0.0, 0.0, 0.0),
+        },
+    ],
+};
+```
+
+This fails with a compiler error of 'mismatched types' when we try to add the
+`Triangle`.
+
+It may not be immediately obvious why this is a problem so let's dig a little
+deeper. When we create an instance of `Scene<H>` the compiler assigns a concrete
+value to `H`. In this case the value of `H` is derived from the first type that
+we add to our vector, so `H = Sphere`. When we try to add a second element the
+compiler is expecting to find another `Sphere` but instead it finds a `Triangle`
+and raises the 'mismatched types' error.
+
+In other words our `Scene<H>` can have a concrete value of `Scene<Sphere>` (and
+only contain spheres) **or** `Scene<Triangle>` (and only contain triangles), it
+cannot be both and contain both spheres and triangles.
+
+More generally speaking this is because `Vec` needs to know the size and type of
+the values it will be storing at compile time and so it can only store values of
+a single type that has a known size. This applies to most other container types
+in Rust.
+
+> **Aside**<br />
+> Enums are able to get around this because they are in fact a sized type. They
+> simply take the size of their largest variant.
+
+So generics will not work for our `Scene` struct.
+
+### Advanced use cases
+
+What about our case from before where `get_ray_color` also requires our input
+type to implement `Clone`. This functionality is built into generics so we can
+simply do this:
+
+```rust
+fn get_ray_color<H: Hittable + Clone>(ray: &Ray, object: &H) -> Color {
+    // ...
+}
+```
+
+This generalizes to any additional traits.
+
+As for accessing the underlying type... well that's a little more complicated. I
+will show you what works here but I'm not going to explain it in detail as I
+will be going over this in the `dyn Trait` section, and it should make more
+sense once we understand what `dyn Trait` is.
+
+Imagine we need to do something special to `Triangle` types at the start of our
+`get_ray_color` function. This can be achieved by using the `Any` trait from the
+standard library as follows:
+
+```rust
+use std::any::Any;
+
+fn get_ray_color<H: Hittable + 'static>(ray: &Ray, object: &H) -> Color {
+    // Upcast H to dyn Any
+    let my_any: &dyn Any = object;
+
+    // Fallibly downcast dyn Any to Triangle
+    match my_any.downcast_ref::<Triangle>() {
+        Some(triangle) => todo!(), // Do something special here
+        None => (),
+    }
+    // ...
+}
+```
+
+Note that for this to work we need to impose an additional constraint of
+`'static` on `H`. This is a constraint of the `Any` trait.
+
+### Advantages & disadvantages
+
+I think the main advantage of generics is that they are very flexible and you
+can define complex type constraints without a lot of effort. They really
+encapsulate the spirit if polymorphism in the sense of "I don't care what type
+this is, just so long as it does X".
+
+Generics also don't incur any performance costs.
+
+The main disadvantage of course is that it does not work in all situations, like
+we saw with our `Scene` type.
+
+Another minor disadvantage is that they can increase your binary size. This is
+because the Rust compiler monomorphizes generics at compile time. This means the
+compiler creates separate version of your generic object for each unique type
+that it is called with. In most cases though this is probably not a concern.
+
+### `impl Trait`
+
+`impl Trait` is another feature of Rust that is very similar to generics. It can
+be used to represent a type that implements a given trait much like generics
+can. It can only be used for function parameters and return types however. Here
+is and example with our `get_ray_color` function:
+
+```rust
+fn get_hit(object: impl Hittable) -> Option<Ray> {
+    // ...
+}
+```
+
+The concrete type is inferred by the compiler, and unlike generics you cannot
+use the turbofish syntax to specify a particular type.
+
+The main use case of `impl Trait` is to return types that cannot be named like
+closures (`impl Fn(T)`) and iterators (`impl Iterator<Item = T>`).
