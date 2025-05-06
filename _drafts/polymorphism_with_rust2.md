@@ -1,11 +1,28 @@
 ---
-layout: page
+layout: post
 title: "Polymorphism with Rust, part 2: Generics"
 tags: [rust, polymorphism, inheritance, generics]
 ---
 
+This is the third post in a four part series on polymorphism with Rust. In this
+post I discuss how generics can be used to implement polymorphism in Rust.
 
-## Polymorphism with generics
+<div class="table-of-contents" markdown=1>
+**Contents**
+
+* Do not remove this line (it will not be displayed)
+{:toc}
+
+**This series**
+
+<!-- TODO: Add post URLs -->
+- [Part 0: Introduction](/)
+- [Part 1: Enums](/)
+- [**Part 2: Generics**](/)
+- [Part 3: Trait objects](/)
+</div>
+
+## What are generics?
 
 Generics allow us to generalize a function for multiple types, and we are able
 to specify certain traits that a generic type must implement. The syntax for
@@ -22,7 +39,7 @@ fn do_something<T: Trait>(x: T) {}
 > fn do_something<T>(x: T) where t: Trait {}
 > ```
 
-### `get_ray_color` with generics
+## Polymorphic functions
 
 This is perfect for our `get_ray_color` function as we can see here:
 
@@ -57,7 +74,7 @@ to our function. Thus it is not necessary to pick between the enum pattern we
 described in the previous section and generics, we can use them both at the same
 time.
 
-### `Scene` with generics
+## Polymorphic lists
 
 What about our `Scene` struct? Well generics can be applied to structs as
 follows:
@@ -115,7 +132,9 @@ in Rust.
 
 So generics will not work for our `Scene` struct.
 
-### Advanced use cases
+## Advanced use cases
+
+### Multiple traits
 
 What about our case from before where `get_ray_color` also requires our input
 type to implement `Clone`. This functionality is built into generics so we can
@@ -128,6 +147,8 @@ fn get_ray_color<H: Hittable + Clone>(ray: &Ray, object: &H) -> Color {
 ```
 
 This generalizes to any additional traits.
+
+### Underlying type
 
 As for accessing the underlying type... well that's a little more complicated. I
 will show you what works here but I'm not going to explain it in detail as I
@@ -157,7 +178,9 @@ fn get_ray_color<H: Hittable + 'static>(ray: &Ray, object: &H) -> Color {
 Note that for this to work we need to impose an additional constraint of
 `'static` on `H`. This is a constraint of the `Any` trait.
 
-### Advantages & disadvantages
+### Nested type
+
+## Advantages & disadvantages
 
 I think the main advantage of generics is that they are very flexible and you
 can define complex type constraints without a lot of effort. They really
@@ -174,7 +197,7 @@ because the Rust compiler monomorphizes generics at compile time. This means the
 compiler creates separate version of your generic object for each unique type
 that it is called with. In most cases though this is probably not a concern.
 
-### `impl Trait`
+## `impl Trait`
 
 `impl Trait` is another feature of Rust that is very similar to generics. It can
 be used to represent a type that implements a given trait much like generics
@@ -192,3 +215,6 @@ use the turbofish syntax to specify a particular type.
 
 The main use case of `impl Trait` is to return types that cannot be named like
 closures (`impl Fn(T)`) and iterators (`impl Iterator<Item = T>`).
+
+<!-- TODO: Add link -->
+**Next post:** [Part 3: Trait objects]

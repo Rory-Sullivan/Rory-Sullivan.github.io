@@ -1,19 +1,36 @@
 ---
-layout: page
+layout: post
 title: "Polymorphism with Rust, part 3: Trait objects"
 tags: [rust, polymorphism, inheritance, trait objects, dyn trait]
 ---
 
+This is the fourth post in a four part series on polymorphism with Rust. In this
+post I discuss how trait objects can be used to implement polymorphism in Rust.
 
-## `dyn Trait` (trait objects)
+<div class="table-of-contents" markdown=1>
+**Contents**
 
-`dyn Trait` is a special type in Rust called a trait object, that can represent
-any type that implements a given trait. Unlike generics which do compile time
-monomorphization, trait objects use dynamic dispatch at run time. This means we
-do not need to know the underlying type at compile time. This gives trait
-objects a lot of flexibility but also means that they are an unsized type,
-because the compiler does not know the size of the underlying type at compile
-time. As we will see this comes with certain limitations.
+* Do not remove this line (it will not be displayed)
+{:toc}
+
+**This series**
+
+<!-- TODO: Add post URLs -->
+- [Part 0: Introduction](/)
+- [Part 1: Enums](/)
+- [Part 2: Generics](/)
+- [**Part 3: Trait objects**](/)
+</div>
+
+## What are trait objects?
+
+Trait objects are a special type in Rust represented by `dyn Trait`, that can
+represent any type that implements a given trait. Unlike generics which do
+compile time monomorphization, trait objects use dynamic dispatch at run time.
+This means we do not need to know the underlying type at compile time. This
+gives trait objects a lot of flexibility but also means that they are an unsized
+type, because the compiler does not know the size of the underlying type at
+compile time. As we will see this comes with certain limitations.
 
 The most notable one is that we cannot directly refer to `dyn Trait` in our
 function or struct definitions, some level of indirection is required. In our
@@ -26,7 +43,7 @@ with other pointer types in Rust like `Rc` and `Arc`.
 > fundamental difference is that `Box<dyn Trait>` takes ownership of the
 > underlying instance while `&dyn Trait` simply borrows it.
 
-### `get_ray_color`
+## Polymorphic functions
 
 Updating our `get_ray_color` function to use `dyn Trait` is quite straight
 forward:
@@ -58,7 +75,7 @@ However this does not offer any benefits over the generic version, so in most
 cases I would recommend sticking with that. The real benefit of `dyn Trait` we
 will see in the next section.
 
-### `Scene`
+## Polymorphic lists
 
 Unlike generics trait objects are really the solution we need to make our scene
 accept any type that implements a trait. Although the size of a trait object is
@@ -97,7 +114,7 @@ Note that typically you would not want to box elements before adding them to a
 vector as this is really a double indirection, however in this case it is
 necessary because of the nature of trait objects.
 
-### Implementing trait for `dyn trait`
+### `impl Trait for dyn trait`
 
 You might be wondering about passing a trait object to our generic
 `get_ray_color` function from earlier in this series.
@@ -200,7 +217,9 @@ If you want more information on implementing a trait for `Box<dyn Trait>` I
 would recommend this [article by QuineDot](https://quinedot.github.io/rust-learning/dyn-trait-box-impl.html),
 as there are a few more considerations not discussed here.
 
-### Advanced use cases
+## Advanced use cases
+
+### Multiple traits
 
 What about our advanced case of requiring a trait object to be clone-able and
 hittable. Imagine the following:
@@ -317,6 +336,8 @@ let _ = get_ray_color(&ray, &sphere);
 If this seems painful it sure is, fortunately there is a crate that can simplify
 this a lot, [dyn-clone](https://crates.io/crates/dyn_clone).
 
+### Underlying type
+
 What about getting back the underlying type of a trait object? Well as we saw in
 the generics section this is possible via the builtin `Any` trait. The `Any`
 trait is designed to allow for dynamic typing in Rust, it specifically does this
@@ -355,7 +376,9 @@ match any_hittable.downcast_ref::<Triangle>() { // Downcast
 For even more information on `dyn Trait` I would recommend 'A tour of dyn Trait'
 in this [book by QuineDot](https://quinedot.github.io/rust-learning/dyn-trait.html).
 
-### Advantages & disadvantages
+### Nested type
+
+## Advantages & disadvantages
 
 The main advantage of `dyn Trait` is that it can solve problems that the other
 methods we have seen here just can't. Such as creating a list of elements that

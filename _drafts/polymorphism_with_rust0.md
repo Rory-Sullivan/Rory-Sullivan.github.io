@@ -5,21 +5,30 @@ tags: [rust, polymorphism, inheritance]
 ---
 
 This is the first post in a four part series on polymorphism with Rust. In this
-series, I discuss various methods for implementing polymorphism in Rust. I look
-at the advantages and disadvantages of each method, and discuss some more
-complicated use cases that can cause problems in certain situations.
-
-This series assumes a basic understanding of Rust.
+series, I discuss various methods for implementing polymorphism in Rust with a
+particular focus on inheritance like behaviour. I look at the advantages and
+disadvantages of each method, and discuss some more complicated use cases that
+can cause problems in certain situations.
 
 In this post I discuss what polymorphism is, why we want to implement it in
-Rust, and set up a motivating example that I will use in the rest of this
+Rust, and set up a motivating example that I will use for the rest of the
 series.
+
+This series assumes a basic understanding of Rust.
 
 <div class="table-of-contents" markdown=1>
 **Contents**
 
 * Do not remove this line (it will not be displayed)
 {:toc}
+
+**This series**
+
+<!-- TODO: Add post URLs -->
+- [**Part 0: Introduction**](/)
+- [Part 1: Enums](/)
+- [Part 2: Generics](/)
+- [Part 3: Trait objects](/)
 </div>
 
 ## What is polymorphism?
@@ -40,7 +49,9 @@ fn do_something(x: T) {
 ```
 
 We would like a type signature for `T` that accepts any type that has the
-`something` method.
+`something` method. This is a particular flavour of polymorphism that is often
+associated with interfaces or inheritance in other languages. There are other
+aspects to polymorphism, but this is what I will be focusing on in this series.
 
 ### OOP and inheritance
 
@@ -97,7 +108,8 @@ void main()
 ```
 
 Rust does not have inheritance so we will be exploring other methods for how we
-can implement this behaviour in Rust.
+can implement this behaviour in Rust, specifically enums, generics, and trait
+objects (`dyn Trait`).
 
 ## Why is polymorphism useful?
 
@@ -106,15 +118,16 @@ write. Instead of writing five nearly identical functions for five different
 types that have some shared functionality, you can just write one and the
 compiler will fill in the gaps.
 
-In particular, I think it is very interesting to look at the case of how we can
-get inheritance-like behaviour in Rust. It is common to rewrite programmes from
-object oriented languages, like C++, to Rust. This was how I originally got
-interested in this topic, as we will discuss below.
+I think it is particularly interesting to look at how we can get
+inheritance-like behaviour in Rust. It is not uncommon to rewrite programmes
+from OOP languages in Rust, and in trying to match the behaviour of the original
+code like for like, this challenge often comes up. This was how I originally got
+interested in this topic as we will discuss below.
 
 ## Motivating example
 
 A while back I found myself writing a ray tracing engine in Rust. Ray tracing is
-a method for generating computer graphics. It involves sending out "light" rays
+a method for generating computer graphics. It involves sending out "light rays"
 from a camera and bouncing them off objects in the scene.
 
 The book I was following was written in C++ so I regularly came across this
@@ -135,9 +148,9 @@ struct Ray {
 }
 ```
 
-Our type aliases `Vec3` and `Color` are both a triple of numbers representing a
-3D vector and an RGB triple respectively. Our struct `Ray` represents a light
-ray that we will fire into our scene.
+Our type aliases `Vec3` and `Color` represent a 3D vector and an RGB triple
+respectively. Our struct `Ray` represents a light ray that we will fire into our
+scene.
 
 The book then goes on to create a parent class that all hittable objects will
 inherit from. The obvious analogy to this in Rust is a trait:
@@ -182,7 +195,7 @@ impl Hittable for Triangle {
 
 I have omitted the actual implementations of the `does_hit` method as that is
 beyond the scope of this article and not very important. Note that we are
-deriving the `Clone` trait for both of these struct, this will be important
+deriving the `Clone` trait for both of these structs, this will be important
 later.
 
 Finally we have two constructs that interact with these hittable objects:
@@ -191,17 +204,21 @@ Finally we have two constructs that interact with these hittable objects:
 fn get_ray_color(ray: &Ray, object: &T) -> Color {
     // ...
 }
+```
 
+A function `get_ray_color` that takes references to a ray and some hittable
+object and returns the color of that ray based on whether or not it hits the
+object. This will serve as an example of a polymorphic function.
+
+```rust
 struct Scene {
     pub objects: Vec<T>,
 }
 ```
 
-We have a function `get_ray_color` that takes references to a ray and some
-hittable object and returns the color of that ray based on whether or not it
-hits the object. We have a struct `Scene` that will hold some list of hittable
-objects in our scene. Importantly we want to be able to pass both spheres and
-triangles to our function and store both in our list of objects.
+And a struct `Scene` that will hold some list of hittable objects in our scene.
+This will serve as an example of a polymorphic list. Importantly we want to
+store both spheres and triangles in the same scene.
 
 Right now this code will not compile because the `T` placeholder we have for a
 hittable object is not valid. The question we need to answer is: what type can
@@ -223,6 +240,15 @@ struct Scene {
 But again, this does not compile; the Rust compiler warning us that a trait
 cannot be used in place of a type.
 
-We are also going to have a look at some more advanced use cases, such as
-implementing multiple traits and how to access the underlying concrete type.
-These can be pain points of some of the methods we discuss.
+## Advanced use cases
+
+In addition to the above, we are also going to have a look at three more
+advanced use cases. First we will look at implementing multiple traits, in
+particular we will be looking at taking an input type that implements both
+`Hittable` and `Clone`. Second we will look at how to access the underlying
+concrete type, imagine our `get_ray_color` function needs to handle a special
+case for triangles. Finally we will look at nesting a type inside of itself, in
+this case we will be looking at nesting one `Scene` inside of another.
+
+<!-- TODO: Add link -->
+**Next post:** [Part 1: Enums]
