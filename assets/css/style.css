@@ -57,7 +57,7 @@ body {
 
 /* Table of contents */
 
-.table-of-contents a {
+.table-of-contents #markdown-toc a {
   color: #222222;
 }
 
@@ -71,4 +71,16 @@ body {
     text-align: left;
     margin-top: 4rem;
   }
+}
+
+/* Lists */
+
+ul ul {
+  margin-bottom: 0;
+}
+
+/* Code */
+pre {
+  overflow-x: scroll;
+  text-wrap-mode: nowrap;
 }
