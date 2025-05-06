@@ -16,8 +16,8 @@ post I discuss how generics can be used to implement polymorphism in Rust.
 **This series**
 
 <!-- TODO: Add post URLs -->
-- [Part 0: Introduction](/)
-- [Part 1: Enums](/)
+- [Part 0: Introduction]({% post_url 2025-05-06-polymorphism_with_rust0 %})
+- [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
 - [**Part 2: Generics**](/)
 - [Part 3: Trait objects](/)
 </div>

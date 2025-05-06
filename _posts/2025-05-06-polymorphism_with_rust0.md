@@ -25,10 +25,10 @@ This series assumes a basic understanding of Rust.
 **This series**
 
 <!-- TODO: Add post URLs -->
-- [**Part 0: Introduction**](/)
-- [Part 1: Enums](/)
-- [Part 2: Generics](/)
-- [Part 3: Trait objects](/)
+- [**Part 0: Introduction**]({% post_url 2025-05-06-polymorphism_with_rust0 %})
+- [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
+- Part 2: Generics (coming soon)
+- Part 3: Trait objects (coming soon)
 </div>
 
 ## What is polymorphism?
@@ -250,5 +250,4 @@ concrete type, imagine our `get_ray_color` function needs to handle a special
 case for triangles. Finally we will look at nesting a type inside of itself, in
 this case we will be looking at nesting one `Scene` inside of another.
 
-<!-- TODO: Add link -->
-**Next post:** [Part 1: Enums]
+**Next post:** [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
