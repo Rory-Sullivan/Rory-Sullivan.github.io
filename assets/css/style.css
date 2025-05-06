@@ -1,4 +1,9 @@
-/* Only show the profile photo in the sidebar on larger devices */
+/* Theme overrides */
+
+body {
+  color: #222222;
+}
+
 .head-shot-container {
   display: none;
 }
