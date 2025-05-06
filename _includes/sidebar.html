@@ -1,9 +1,6 @@
 <div class="sidebar">
   <div class="container">
     <div class="sidebar-about">
-      <div class="head-shot-container">
-        <img src="/assets/images/rory_headshot.jpg" alt="Portrait photo of Rory" />
-      </div>
       <h1>
         <a href="/"> {{ site.title }} </a>
       </h1>
@@ -21,7 +18,9 @@
         href="/projects"
         >Projects</a
       >
-      <a class="sidebar-nav-item{% if page.url == '/blog.html' %} active{% endif %}" href="/blog">Blog</a>
+      <a class="sidebar-nav-item{% if page.url == '/blog.html' %} active{% endif %}" href="/blog"
+        >Blog</a
+      >
     </nav>
     <nav class="sidebar-nav sidebar-bottom">
       <a class="sidebar-nav-item" href="{{ site.linkedin_url }}">
