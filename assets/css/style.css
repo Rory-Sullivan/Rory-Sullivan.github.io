@@ -29,12 +29,12 @@
 }
 
 .button {
-    text-align: center;
-    padding: 0.5rem 0.75rem;
-    color: #fff;
-    background-color: #202020;
-    border-color: #202020;
-    border-radius: 0.25rem;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  background-color: #202020;
+  border-color: #202020;
+  border-radius: 0.25rem;
 }
 
 .button:hover {
@@ -48,4 +48,22 @@
 
 .post-date {
   margin-bottom: 0.5rem;
+}
+
+/* Table of contents */
+
+.table-of-contents a {
+  color: #515151;
+}
+
+@media (min-width: 100em) {
+  .table-of-contents {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 18rem;
+    text-align: left;
+    margin-top: 4rem;
+  }
 }
