@@ -15,11 +15,10 @@ post I discuss how enums can be used to implement polymorphism in Rust.
 
 **This series**
 
-<!-- TODO: Add post URLs -->
 - [Part 0: Introduction]({% post_url 2025-05-06-polymorphism_with_rust0 %})
 - [**Part 1: Enums**]({% post_url 2025-05-06-polymorphism_with_rust1 %})
-- Part 2: Generics (coming soon)
-- Part 3: Trait objects (coming soon)
+- [Part 2: Generics]({% post_url 2025-05-08-polymorphism_with_rust2 %})
+- [Part 3: Trait objects]({% post_url 2025-05-08-polymorphism_with_rust3 %})
 </div>
 
 ## What are enums?
@@ -272,5 +271,4 @@ next two solutions we look at deal with these issues.
 > [enum_dispatch](https://docs.rs/enum_dispatch/latest/enum_dispatch/) are two
 > examples.
 
-<!-- TODO: Add link -->
-**Next post:** Part 2: Generics (coming soon)
+**Next post:** [Part 2: Generics]({% post_url 2025-05-08-polymorphism_with_rust2 %})

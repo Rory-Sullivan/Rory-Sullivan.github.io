@@ -15,11 +15,10 @@ post I discuss how trait objects can be used to implement polymorphism in Rust.
 
 **This series**
 
-<!-- TODO: Add post URLs -->
 - [Part 0: Introduction]({% post_url 2025-05-06-polymorphism_with_rust0 %})
 - [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
-- [Part 2: Generics](/)
-- [**Part 3: Trait objects**](/)
+- [Part 2: Generics]({% post_url 2025-05-08-polymorphism_with_rust2 %})
+- [**Part 3: Trait objects**]({% post_url 2025-05-08-polymorphism_with_rust3 %})
 </div>
 
 ## What are trait objects?
@@ -71,9 +70,10 @@ let _ = get_ray_color(&ray, &sphere);
 let _ = get_ray_color(&ray, &triangle);
 ```
 
-However this does not offer any benefits over the generic version, so in most
-cases I would recommend sticking with generics for this use case. The real
-benefit of `dyn Trait` we will see in the next section.
+However this does not really offer any benefits over the generic version we saw
+in [part 2]({% post_url 2025-05-08-polymorphism_with_rust2 %}), so in most cases
+I would recommend sticking with that for this use case. The real benefit of
+`dyn Trait` we will see in the next section.
 
 ## Polymorphic lists
 
@@ -97,13 +97,10 @@ fn make_scene() -> Scene {
     Scene {
         objects: vec![
             Box::new(Sphere {
-                center: (0.0, 0.0, 0.0),
-                radius: 1.0,
+                // ...
             }),
             Box::new(Triangle {
-                point1: (0.0, 0.0, 0.0),
-                point2: (1.0, 0.0, 0.0),
-                point3: (0.0, 1.0, 0.0),
+                // ...
             }),
         ],
     }
@@ -111,10 +108,10 @@ fn make_scene() -> Scene {
 ```
 
 Note that typically you would not want to box elements before adding them to a
-vector as this is really a double indirection, however in this case it is
+vector as this creates a double indirection, however in this case it is
 necessary because of the nature of trait objects.
 
-### `impl Trait for dyn trait`
+## Passing trait objects to generics
 
 You might be wondering about passing a trait object to our generic
 `get_ray_color` function from earlier in this series.
@@ -126,7 +123,7 @@ fn get_ray_color<H: Hittable>(ray: &Ray, object: &H) -> Color {
 }
 ```
 
-The `dyn Hittable` type does implement `Hittable`, that's kind of it's whole
+The `dyn Hittable` type does implement `Hittable`, that's kind of its whole
 thing. There is also an automatic implementation provided for `&dyn Hittable`.
 So this should be straight forward right? Let's try the following:
 
@@ -152,7 +149,11 @@ fn get_ray_color<H: Hittable + ?Sized>(ray: &Ray, object: &H) -> Color {
 }
 ```
 
-What if our function takes ownership of our trait object, something like:
+The previous example will now work as expected.
+
+## `impl Trait for Box<dyn Trait>>`
+
+What if our function takes ownership of our trait object? Something like:
 
 ```rust
 fn get_ray_color_own<T: Hittable>(ray: &Ray, object: T) -> Color {
@@ -276,7 +277,8 @@ let _ = get_ray_color(&ray, sphere);
 Once again the compiler says no, stating that 'the trait `HittableClone` is not
 dyn compatible'. Dyn compatibility is probably a whole topic on it's own, but in
 this case the error arises because `Clone` requires the `Sized` trait. Since
-`dyn Trait` is unsized it can never be clone-able.
+`dyn Trait` is unsized it can never be clone-able. However this techniques would
+work for traits that are dyn compatible.
 
 So is this just not possible then? Well not quite. As we have seen before
 `Box<dyn Trait>` is sized so this means that so long as the underlying type is

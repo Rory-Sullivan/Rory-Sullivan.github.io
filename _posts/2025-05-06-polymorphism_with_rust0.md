@@ -24,11 +24,10 @@ This series assumes a basic understanding of Rust.
 
 **This series**
 
-<!-- TODO: Add post URLs -->
 - [**Part 0: Introduction**]({% post_url 2025-05-06-polymorphism_with_rust0 %})
 - [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
-- Part 2: Generics (coming soon)
-- Part 3: Trait objects (coming soon)
+- [Part 2: Generics]({% post_url 2025-05-08-polymorphism_with_rust2 %})
+- [Part 3: Trait objects]({% post_url 2025-05-08-polymorphism_with_rust3 %})
 </div>
 
 ## What is polymorphism?

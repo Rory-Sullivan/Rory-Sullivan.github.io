@@ -15,11 +15,10 @@ post I discuss how generics can be used to implement polymorphism in Rust.
 
 **This series**
 
-<!-- TODO: Add post URLs -->
 - [Part 0: Introduction]({% post_url 2025-05-06-polymorphism_with_rust0 %})
 - [Part 1: Enums]({% post_url 2025-05-06-polymorphism_with_rust1 %})
-- [**Part 2: Generics**](/)
-- [Part 3: Trait objects](/)
+- [**Part 2: Generics**]({% post_url 2025-05-08-polymorphism_with_rust2 %})
+- [Part 3: Trait objects]({% post_url 2025-05-08-polymorphism_with_rust3 %})
 </div>
 
 ## What are generics?
@@ -99,14 +98,11 @@ Then you might think we could do the following:
 let _ = Scene {
     objects: vec![
         Sphere {
-            center: (0.0, 0.0, 0.0),
-            radius: 0.0,
+            // ...
         },
         // Adding a Triangle is a compiler error
         Triangle {
-            point1: (0.0, 0.0, 0.0),
-            point2: (0.0, 0.0, 0.0),
-            point3: (0.0, 0.0, 0.0),
+            // ...
         },
     ],
 };
@@ -124,21 +120,21 @@ and raises the 'mismatched types' error.
 
 In other words our `Scene<H>` can have a concrete value of `Scene<Sphere>` (and
 only contain spheres) or `Scene<Triangle>` (and only contain triangles), it
-cannot be both and contain both spheres and triangles.
+cannot contain both spheres and triangles.
 
-More generally speaking this is because `Vec` needs to know the size and type of
-the values it will be storing at compile time and so it can only store values of
-a single type that has a known size. This is not unique to `Vec` and applies to
-most other container types in Rust.
+More generally speaking, this is because `Vec` needs to know the size and type
+of the values it will be storing at compile time and so it can only store values
+of a single type that has a known size. This is not unique to `Vec` and applies
+to most other container types in Rust.
 
 > **Aside**<br />
 > Enums are able to get around this because they are in fact a sized type. They
 > simply take the size of their largest variant.
 
-<!-- TODO: Link to part 3 -->
 So generics will not work for our `Scene` struct, at least not on their own. As
-we will see in part 3 this is possible with trait objects and we could provide a
-trait object as the concrete type, such as `Scene<Box<dyn Trait>>`.
+we will see in [part 3]({% post_url 2025-05-08-polymorphism_with_rust3 %}) this
+is possible with trait objects and we could provide a trait object as the
+concrete type, such as `Scene<Box<dyn Trait>>`.
 
 ## Advanced use cases
 
@@ -158,11 +154,11 @@ This generalizes to any additional traits.
 
 ### Underlying type
 
-<!-- TODO: Add link to part 3 -->
 As for accessing the underlying type... well that's a little more complicated. I
 will show you what works here but I'm not going to explain it in detail as I
-will be going over this in part 3 when we discuss trait objects, and it should
-make more sense once we understand what `dyn Trait` is.
+will be going over this in [part 3]({% post_url
+2025-05-08-polymorphism_with_rust3 %}) when we discuss trait objects, and it
+should make more sense once we understand what `dyn Trait` is.
 
 Imagine we need to do something special to triangles at the start of our
 `get_ray_color` function. This can be achieved by using the `Any` trait from the
@@ -247,5 +243,4 @@ use the turbofish syntax to specify a particular type.
 The main use case of `impl Trait` is to return types that cannot be named like
 closures (`impl Fn(T)`) and iterators (`impl Iterator<Item = T>`).
 
-<!-- TODO: Add link -->
-**Next post:** [Part 3: Trait objects]
+**Next post:** [Part 3: Trait objects]({% post_url 2025-05-08-polymorphism_with_rust3 %})
