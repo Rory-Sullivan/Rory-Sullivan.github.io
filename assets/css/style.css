@@ -65,9 +65,8 @@ body {
   .table-of-contents {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 64rem;
     bottom: 0;
-    width: 18rem;
     text-align: left;
     margin-top: 4rem;
   }
